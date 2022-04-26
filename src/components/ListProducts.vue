@@ -80,6 +80,7 @@ export default defineComponent({
 <style>
 .listProducts__table {
   width: 100%;
+  border-collapse: collapse;
   border: 1px solid black;
   box-shadow: 5px 5px 2px #00000035;
 }
@@ -87,10 +88,9 @@ export default defineComponent({
 .table__row {
   height: 2.125rem;
   display: flex;
-  justify-content: space-between;
 }
 .table__row.--header {
-  height: 3.125rem;
+ height: 3.125rem;
 }
 .table__column {
   border: 1px solid black;

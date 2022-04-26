@@ -21,7 +21,7 @@ export default defineComponent({
     onMounted(async () => {
       const response = await api.search("");
       data.products = response.data;
-      console.log(data.products);
+     // console.log(data.products);
     });
 
     return {
