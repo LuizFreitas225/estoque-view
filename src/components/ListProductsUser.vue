@@ -2,17 +2,17 @@
   <div class="listProductsUser">
     <table class="listProductsUser__table">
       <tr class="table__row --header">
-        <th class="table__column">Nome</th>
-        <th class="table__column">Descrição</th>
-        <th class="table__column">Preço</th>
-        <th class="table__column">Categoria</th>
+        <th class="listProductsUser__column">Nome</th>
+        <th class="listProductsUser__column">Descrição</th>
+        <th class="listProductsUser__column">Preço</th>
+        <th class="listProductsUser__column">Categoria</th>
       </tr>
 
       <tr v-for="product in productList" :key="product.id" class="table__row">
-        <td class="table__column">{{ product.name }}</td>
-        <td class="table__column">{{ product.description }}</td>
-        <td class="table__column">{{ product.price }}</td>
-        <td class="table__column">{{ product.productCategory }}</td>
+        <td class="listProductsUser__column">{{ product.name }}</td>
+        <td class="listProductsUser__column">{{ product.description }}</td>
+        <td class="listProductsUser__column">{{ product.price }}</td>
+        <td class="listProductsUser__column">{{ product.productCategory }}</td>
       </tr>
     </table>
   </div>
@@ -33,18 +33,20 @@ export default defineComponent({
 <style>
 .listProductsUser__table {
   width: 100%;
+  border-collapse: collapse;
   border: 1px solid black;
+  box-shadow: 5px 5px 2px #00000035;
+  margin-bottom: 50px;
 }
 
-.table__row {
+.listProductsUser__row {
   height: 2.125rem;
   display: flex;
-  justify-content: space-between;
 }
-.table__row.--header {
+.listProductsUser__row.--header {
   height: 3.125rem;
 }
-.table__column {
+.listProductsUser__column {
   border: 1px solid black;
   flex-grow: 1;
   flex-basis: 50px;

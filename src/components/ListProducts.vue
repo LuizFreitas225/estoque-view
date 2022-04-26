@@ -83,6 +83,7 @@ export default defineComponent({
   border-collapse: collapse;
   border: 1px solid black;
   box-shadow: 5px 5px 2px #00000035;
+  margin-bottom: 50px;
 }
 
 .table__row {
