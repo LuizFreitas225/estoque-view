@@ -7,7 +7,7 @@
     <table class="listProducts__table" v-else>
       <tr class="table__row --header">
         <th class="table__column">Nome</th>
-        <th class="table__column">Descrição</th>
+        <th class="table__column --description">Descrição</th>
         <th class="table__column">Preço</th>
         <th class="table__column">Categoria</th>
         <th class="table__column">Código</th>
@@ -16,7 +16,7 @@
 
       <tr v-for="product in productList" :key="product.id" class="table__row">
         <td class="table__column">{{ product.name }}</td>
-        <td class="table__column">{{ product.description }}</td>
+        <td class="table__column --description">{{ product.description }}</td>
         <td class="table__column">{{ product.price }}</td>
         <td class="table__column">{{ product.productCategory }}</td>
         <td class="table__column">{{ product.code }}</td>
@@ -30,16 +30,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref } from "vue";
+import { defineComponent, PropType, Ref } from "vue";
 import { computed, ref } from "vue";
 import ListProductsUser from "@/components/ListProductsUser.vue";
-import Product from "@/config/Product"
+import Product from "@/config/Product";
 
 export default defineComponent({
   name: "App",
   props: {
     productList: {
-      type: Array,
+      type: Array as PropType<Array<Product>>,
       required: true,
     },
   },
@@ -55,19 +55,18 @@ export default defineComponent({
     function trocarTable() {
       isUser.value = !isUser.value;
     }
-    
     // props.productList.map(function(prod){
     //   return Object.assign( Product.class, );
     // });
 
-    // const list:Ref<Array<Product>> = ref(props.productList);
+    const list: Ref<Array<Product>> = ref(props.productList);
 
-    //  let listId = list.map(function(prod) {
-    //     return prod.id;
-    //  });
-    //  console.log(listId);
+    let listId = list.value.map(function (prod) {
+      return prod.id;
+    });
+    console.log(listId);
 
-     return {
+    return {
       isUser,
       trocarTable,
       title,
@@ -91,11 +90,16 @@ export default defineComponent({
   display: flex;
 }
 .table__row.--header {
- height: 3.125rem;
+  height: 3.125rem;
 }
 .table__column {
   border: 1px solid black;
   flex-grow: 1;
   flex-basis: 50px;
+  padding-bottom: 5px;;
+}
+td.--description,
+th.--description {
+  flex-grow: 2;
 }
 </style>
