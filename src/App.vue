@@ -1,24 +1,30 @@
 <template>
-  <ListProducts :productList="productsListTest" />
+  <FilterList @searchTermFilter="filter" />
+  <ListProducts :productList="products" />
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  toRefs,
+  ref,
+  PropType,
+} from "vue";
+import FilterList from "./components/ListFilter.vue";
 import ListProducts from "./components/ListProducts.vue";
 import api from "@/service/api";
 import Product from "./config/Product";
-
 export default defineComponent({
   name: "App",
   components: {
     ListProducts,
+    FilterList,
   },
 
   setup() {
-    const data = reactive({
-      products: {},
-    });
-    const productsListTest = [
+    let api = [
       {
         id: 1,
         name: "PC ",
@@ -52,15 +58,39 @@ export default defineComponent({
         productCategory: "SPORT",
       },
     ];
-    onMounted(async () => {
-      const response = await api.search("");
-      data.products = response.data;
-      // console.log(data.products);
-    });
 
+    const products = ref(api);
+    // onMounted(async () => {
+    //   const response = await api.search("");
+    //   data.products = response.data;
+    //   console.log(data.products);
+    // });
+    function searchTermSelection(product: Product) {
+      if (
+        "name" in product &&
+        "description" in product &&
+        (product.name?.includes("Acer") ||
+          product.description?.includes("Acer"))
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    function filterProducts(searchTerm: string) {
+      return api.filter(function (product) {
+        return product.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
+        product.code.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
+        product.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+      })
+    };
+    function filter(searchTerm: string) {
+      products.value = filterProducts(searchTerm);
+
+    };
     return {
-      ...toRefs(data),
-      productsListTest,
+      products,
+      filter,
     };
   },
 });
@@ -73,6 +103,5 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

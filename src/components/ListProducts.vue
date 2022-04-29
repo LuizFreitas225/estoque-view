@@ -64,7 +64,6 @@ export default defineComponent({
     let listId = list.value.map(function (prod) {
       return prod.id;
     });
-    console.log(listId);
 
     return {
       isUser,
