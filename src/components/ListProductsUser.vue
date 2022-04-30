@@ -2,17 +2,17 @@
   <div class="listProductsUser">
     <table class="listProductsUser__table">
       <tr class="table__row --header">
-        <th class="listProductsUser__column">Nome</th>
-        <th class="listProductsUser__column">Descrição</th>
-        <th class="listProductsUser__column">Preço</th>
-        <th class="listProductsUser__column">Categoria</th>
+        <th class="table__cell">Nome</th>
+        <th class="table__cell">Descrição</th>
+        <th class="table__cell">Preço</th>
+        <th class="table__cell">Categoria</th>
       </tr>
 
       <tr v-for="product in productList" :key="product.id" class="table__row">
-        <td class="listProductsUser__column">{{ product.name }}</td>
-        <td class="listProductsUser__column">{{ product.description }}</td>
-        <td class="listProductsUser__column">{{ product.price }}</td>
-        <td class="listProductsUser__column">{{ product.productCategory }}</td>
+        <td class="table__cell">{{ product.name }}</td>
+        <td class="table__cell">{{ product.description }}</td>
+        <td class="table__cell">{{ product.price }}</td>
+        <td class="table__cell">{{ product.productCategory }}</td>
       </tr>
     </table>
   </div>
@@ -39,14 +39,14 @@ export default defineComponent({
   margin-bottom: 50px;
 }
 
-.listProductsUser__row {
+.table__row {
   height: 2.125rem;
   display: flex;
 }
-.listProductsUser__row.--header {
+.table__row.--header {
   height: 3.125rem;
 }
-.listProductsUser__column {
+.table__cell {
   border: 1px solid black;
   flex-grow: 1;
   flex-basis: 50px;

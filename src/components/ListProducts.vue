@@ -2,29 +2,38 @@
   <div class="listProducts">
     <h1 class="listProducts__tilte">{{ title }}</h1>
     <div class="listProducts__usertable" v-if="isUser">
-      <ListProductsUser :productList="productList" />
+      <ListProductsUser :productList="productsUserReturnList" />
     </div>
     <table class="listProducts__table" v-else>
       <tr class="table__row --header">
-        <th class="table__column">Nome</th>
-        <th class="table__column --description">Descrição</th>
-        <th class="table__column">Preço</th>
-        <th class="table__column">Categoria</th>
-        <th class="table__column">Código</th>
-        <th class="table__column">Estoque</th>
+        <th class="table__cell">Id</th>
+        <th class="table__cell">Nome</th>
+        <th class="table__cell --description">Descrição</th>
+        <th class="table__cell">Preço</th>
+        <th class="table__cell">Categoria</th>
+        <th class="table__cell">Código</th>
+        <th class="table__cell"></th>
       </tr>
 
       <tr v-for="product in productList" :key="product.id" class="table__row">
-        <td class="table__column">{{ product.name }}</td>
-        <td class="table__column --description">{{ product.description }}</td>
-        <td class="table__column">{{ product.price }}</td>
-        <td class="table__column">{{ product.productCategory }}</td>
-        <td class="table__column">{{ product.code }}</td>
-        <td class="table__column">{{ product.productStockQuantity }}</td>
+        <td class="table__cell">{{ product.id }}</td>
+        <td class="table__cell">{{ product.name }}</td>
+        <td class="table__cell --description">{{ product.description }}</td>
+        <td class="table__cell">{{ product.price }}</td>
+        <td class="table__cell">{{ product.productCategory }}</td>
+        <td class="table__cell">{{ product.code }}</td>
+        <td class="table__cell --functionsCell">
+           <div class="cell__functions">
+             <button class="functions__button">Editar</button>
+
+           </div>
+        </td>
       </tr>
     </table>
-    <div class="listProducts__filter">
-      <button @click="trocarTable">Trocar Tabela</button>
+    <div class="listProducts__tableChange">
+      <button class="tableChange__button" @click="trocarTable">
+        {{ buttonText }}
+      </button>
     </div>
   </div>
 </template>
@@ -34,6 +43,7 @@ import { defineComponent, PropType, Ref } from "vue";
 import { computed, ref } from "vue";
 import ListProductsUser from "@/components/ListProductsUser.vue";
 import Product from "@/config/Product";
+import ProductUser from "@/config/ProductUser";
 
 export default defineComponent({
   name: "App",
@@ -48,28 +58,29 @@ export default defineComponent({
   },
   setup(props) {
     const isUser = ref(false);
+    const productsReturnList: Ref<Array<Product>> = ref(props.productList);
+    const productsUserReturnList: Ref<Array<ProductUser>> = computed(() =>
+      props.productList.map(function (product) {
+        const productUser: ProductUser = product;
+        return productUser;
+      })
+    );
     const title = computed(() =>
       isUser.value ? "Tabela Para Usuários" : "Tabela Para Administradores"
     );
 
+    const buttonText = ref("Sou Usuário");
     function trocarTable() {
       isUser.value = !isUser.value;
+      buttonText.value = isUser.value ? "Sou Admin" : "Sou Usuário";
     }
-    // props.productList.map(function(prod){
-    //   return Object.assign( Product.class, );
-    // });
-
-    const list: Ref<Array<Product>> = ref(props.productList);
-
-    let listId = list.value.map(function (prod) {
-      return prod.id;
-    });
-
     return {
       isUser,
       trocarTable,
       title,
-      //list
+      buttonText,
+      productsReturnList,
+      productsUserReturnList,
     };
   },
 });
@@ -91,14 +102,24 @@ export default defineComponent({
 .table__row.--header {
   height: 3.125rem;
 }
-.table__column {
+.table__cell {
   border: 1px solid black;
   flex-grow: 1;
   flex-basis: 50px;
-  padding-bottom: 5px;;
+  padding-bottom: 5px;
 }
-td.--description,
-th.--description {
+.table__cell.--description {
   flex-grow: 2;
+}
+.tableChange__button, .functions__button {
+  transition-duration: 0.4s;
+  background-color: #4caf50;
+  border: 2px solid #4caf50 ;
+  color: white;
+  border-radius: 4px;
+}
+
+.tableChange__button:hover, .functions__button:hover {
+  border: 2px solid white ;
 }
 </style>
