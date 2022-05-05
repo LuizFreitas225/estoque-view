@@ -5,7 +5,7 @@
       <ListProductsUser :productList="productsUserReturnList" />
     </div>
     <table class="listProducts__table" v-else>
-      <tr class="table__row --header">
+      <tr class="listProducts__table__row --header">
         <th class="table__cell">Id</th>
         <th class="table__cell">Nome</th>
         <th class="table__cell --description">Descrição</th>
@@ -23,10 +23,10 @@
         <td class="table__cell">{{ product.productCategory }}</td>
         <td class="table__cell">{{ product.code }}</td>
         <td class="table__cell --functionsCell">
-           <div class="cell__functions">
-             <button class="functions__button">Editar</button>
-
-           </div>
+          <div class="cell__functions">
+            <button class="functions__button"
+             @click="$emit('edit', key)">Editar</button>
+          </div>
         </td>
       </tr>
     </table>
@@ -42,6 +42,7 @@
 import { defineComponent, PropType, Ref } from "vue";
 import { computed, ref } from "vue";
 import ListProductsUser from "@/components/ListProductsUser.vue";
+import ProductCategory from "@/config/ProductCategory"
 import Product from "@/config/Product";
 import ProductUser from "@/config/ProductUser";
 
@@ -49,13 +50,14 @@ export default defineComponent({
   name: "App",
   props: {
     productList: {
-      type: Array as PropType<Array<Product>>,
+      type: Array as PropType<Product[]>,
       required: true,
     },
   },
   components: {
     ListProductsUser,
   },
+   emits: ["edit"],
   setup(props) {
     const isUser = ref(false);
     const productsReturnList: Ref<Array<Product>> = ref(props.productList);
@@ -111,15 +113,17 @@ export default defineComponent({
 .table__cell.--description {
   flex-grow: 2;
 }
-.tableChange__button, .functions__button {
+.tableChange__button,
+.functions__button {
   transition-duration: 0.4s;
   background-color: #4caf50;
-  border: 2px solid #4caf50 ;
+  border: 2px solid #4caf50;
   color: white;
   border-radius: 4px;
 }
 
-.tableChange__button:hover, .functions__button:hover {
-  border: 2px solid white ;
+.tableChange__button:hover,
+.functions__button:hover {
+  border: 2px solid white;
 }
 </style>

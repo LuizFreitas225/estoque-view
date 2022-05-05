@@ -1,11 +1,6 @@
 <template>
   <div class="listFilter">
     <div class="listFilter__searchTermFilter">
-      <form
-        action=""
-        class="searchTermFilter__formFilter"
-        @submit="searchTermSubmit()"
-      ></form>
       <input
         v-model="searchTerm"
         type="text"
@@ -20,6 +15,11 @@
         Buscar
       </button>
     </div>
+
+    <div id="app">
+      <h1>Vue Select</h1>
+      <v-select :options="categories" label="title"> </v-select>
+    </div>
   </div>
 </template>
 
@@ -27,7 +27,7 @@
 import { defineComponent, PropType, Ref } from "vue";
 import { computed, ref } from "vue";
 import Product from "@/config/Product";
-//import ProductCategory from "@/config/ProductCategory";
+import ProductCategory from "@/config/ProductCategory";
 
 export default defineComponent({
   name: "App",
@@ -39,7 +39,9 @@ export default defineComponent({
   },
   emits: ["searchTermFilter"],
   setup() {
-    const searchTerm = ref(""); 
+    const searchTerm = ref("");
+    const categories = ref(Array.of(ProductCategory));
+    console.log(categories);
     return {
       searchTerm,
     };
@@ -61,14 +63,13 @@ export default defineComponent({
 }
 .formFilter__button {
   transition-duration: 0.4s;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   border: 2px solid #4caf50;
   color: white;
 }
 
 .formFilter__button:hover {
   background-color: white;
-   color: black;
+  color: black;
 }
-
 </style>

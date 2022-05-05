@@ -1,6 +1,11 @@
 <template>
   <FilterList @searchTermFilter="filter" />
-  <ListProducts :productList="productsReturnList" />
+  <ListProducts :productList="productsReturnList" @edit="startEdition" />
+  <ProductsForm
+    v-if="showForm"
+    :key="keyEdit"
+    :productList="productsReturnList"
+  />
 </template>
 
 <script lang="ts">
@@ -11,9 +16,11 @@ import {
   toRefs,
   ref,
   PropType,
+  Ref,
 } from "vue";
 import FilterList from "./components/ListFilter.vue";
 import ListProducts from "./components/ListProducts.vue";
+import ProductsForm from "./components/ProductsForm.vue";
 import api from "@/service/api";
 import Product from "./config/Product";
 
@@ -22,22 +29,24 @@ export default defineComponent({
   components: {
     ListProducts,
     FilterList,
+    ProductsForm,
   },
 
   setup() {
-    const data = reactive({
-      products: [],
-    });
-
-    const productsReturnList = ref(data.products);
+    
+    const products = ref( [])
+    const productsReturnList = ref([]);
+    const keyEdit:Ref<number> = ref(0);
+    const showForm = ref(false);
 
     onMounted(async () => {
       const response = await api.search("");
-      data.products = response.data.content;
+      products.value = response.data.content;
+      console.log(products.value);
     });
 
     function filterProducts(searchTerm: string) {
-      return data.products.filter(function (product: Product) {
+      return products.value.filter(function (product: Product) {
         return (
           product.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
           product.code.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
@@ -49,10 +58,19 @@ export default defineComponent({
 
     function filter(searchTerm: string) {
       productsReturnList.value = filterProducts(searchTerm);
-    }
+    };
+    function startEdition(key: number) {
+      keyEdit.value = key;
+      showForm.value = true;
+      console.log("estive aqui!s");
+    };
+
     return {
       productsReturnList,
       filter,
+      startEdition,
+      keyEdit,
+      showForm,
     };
   },
 });
