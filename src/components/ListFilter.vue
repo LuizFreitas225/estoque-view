@@ -16,16 +16,19 @@
       </button>
     </div>
 
-    <div id="app">
-      <h1>Vue Select</h1>
-      <v-select :options="categories" label="title"> </v-select>
+    <div>
+      <select>
+        <option v-for="category in categories" :key="category">
+          {{ category }}
+        </option>
+      </select>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, Ref } from "vue";
-import { computed, ref } from "vue";
+import { defineComponent, onMounted, PropType, Ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import Product from "@/config/Product";
 import ProductCategory from "@/config/ProductCategory";
 
@@ -38,12 +41,24 @@ export default defineComponent({
     },
   },
   emits: ["searchTermFilter"],
-  setup() {
+  setup(props, { emit }) {
     const searchTerm = ref("");
-    const categories = ref(Array.of(ProductCategory));
-    console.log(categories);
+    let categories = ref([""]);
+    watchEffect(() => emit('searchTermFilter', searchTerm.value));
+    onMounted(() => {
+      categories.value.pop();
+      for (let category in ProductCategory) {
+        if (
+          ProductCategory.hasOwnProperty(category) &&
+          isNaN(parseInt(category))
+        ) {
+          categories.value.push(category);
+        }
+      }
+    });
     return {
       searchTerm,
+      categories,
     };
   },
 });

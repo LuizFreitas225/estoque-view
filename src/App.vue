@@ -33,16 +33,15 @@ export default defineComponent({
   },
 
   setup() {
-    
-    const products = ref( [])
+    const products = ref([]);
     const productsReturnList = ref([]);
-    const keyEdit:Ref<number> = ref(0);
+    const keyEdit: Ref<number> = ref(0);
     const showForm = ref(false);
 
     onMounted(async () => {
       const response = await api.search("");
       products.value = response.data.content;
-      console.log(products.value);
+      productsReturnList.value = products.value;
     });
 
     function filterProducts(searchTerm: string) {
@@ -58,12 +57,12 @@ export default defineComponent({
 
     function filter(searchTerm: string) {
       productsReturnList.value = filterProducts(searchTerm);
-    };
+    }
     function startEdition(key: number) {
       keyEdit.value = key;
       showForm.value = true;
       console.log("estive aqui!s");
-    };
+    }
 
     return {
       productsReturnList,

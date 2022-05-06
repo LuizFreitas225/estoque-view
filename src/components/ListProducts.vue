@@ -4,8 +4,8 @@
     <div class="listProducts__usertable" v-if="isUser">
       <ListProductsUser :productList="productsUserReturnList" />
     </div>
-    <table class="listProducts__table" v-else>
-      <tr class="listProducts__table__row --header">
+    <table class="listProducts-table" v-else>
+      <tr class="listProducts-table__row --header">
         <th class="table__cell">Id</th>
         <th class="table__cell">Nome</th>
         <th class="table__cell --description">Descrição</th>
@@ -15,7 +15,7 @@
         <th class="table__cell"></th>
       </tr>
 
-      <tr v-for="product in productList" :key="product.id" class="table__row">
+      <tr v-for="product in productList" :key="product.id" class="listProducts-table__row">
         <td class="table__cell">{{ product.id }}</td>
         <td class="table__cell">{{ product.name }}</td>
         <td class="table__cell --description">{{ product.description }}</td>
@@ -24,8 +24,9 @@
         <td class="table__cell">{{ product.code }}</td>
         <td class="table__cell --functionsCell">
           <div class="cell__functions">
-            <button class="functions__button"
-             @click="$emit('edit', key)">Editar</button>
+            <button class="functions__button" @click="$emit('edit', key)">
+              Editar
+            </button>
           </div>
         </td>
       </tr>
@@ -42,7 +43,7 @@
 import { defineComponent, PropType, Ref } from "vue";
 import { computed, ref } from "vue";
 import ListProductsUser from "@/components/ListProductsUser.vue";
-import ProductCategory from "@/config/ProductCategory"
+import ProductCategory from "@/config/ProductCategory";
 import Product from "@/config/Product";
 import ProductUser from "@/config/ProductUser";
 
@@ -57,7 +58,7 @@ export default defineComponent({
   components: {
     ListProductsUser,
   },
-   emits: ["edit"],
+  emits: ["edit"],
   setup(props) {
     const isUser = ref(false);
     const productsReturnList: Ref<Array<Product>> = ref(props.productList);
@@ -89,7 +90,8 @@ export default defineComponent({
 </script>
 
 <style>
-.listProducts__table {
+
+.listProducts-table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid black;
@@ -97,11 +99,11 @@ export default defineComponent({
   margin-bottom: 50px;
 }
 
-.table__row {
+.listProducts-table__row {
   height: 2.125rem;
   display: flex;
 }
-.table__row.--header {
+.listProducts-table__row.--header {
   height: 3.125rem;
 }
 .table__cell {
